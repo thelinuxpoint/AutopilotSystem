@@ -97,6 +97,8 @@ class Vehicle(object):
 	def __init__(self,conn):
 		self.vehicle = connect(conn, wait_ready=True)
 
+
+
 	def arm(self):
 		self.vehicle.armed = True
 		print("APS|> ARMING MOTORS ...",end="")
@@ -105,6 +107,8 @@ class Vehicle(object):
 			print(".",end="")
 			time.sleep(1)
 		print(" OK")
+
+
 
 	def arm_and_takeoff(self,altitude):
 
@@ -126,13 +130,13 @@ class Vehicle(object):
 		self.vehicle.simple_takeoff(altitude)  # Take off to target altitude
 
 		#---------------------- CHECK ALTITUDE --------------------
-		while True:
-			print("APS|> Altitude: ", self.vehicle.location.global_relative_frame.alt)
-			self.turn(180,True,"CW")
-			# Break and return from function just below target altitude.
-			if self.vehicle.location.global_relative_frame.alt >= altitude * 0.95:
-				print("Reached target altitude")
-				break
+		# while True:
+		# 	print("APS|> Altitude: ", self.vehicle.location.global_relative_frame.alt)
+		# 	self.turn(180,True,"CW")
+		# 	# Break and return from function just below target altitude.
+		# 	if self.vehicle.location.global_relative_frame.alt >= altitude * 0.95:
+		# 		print("Reached target altitude")
+		# 		break
 
 	def turn(self,heading, relative, direction):
 
@@ -166,8 +170,9 @@ class Vehicle(object):
 			0, 0, 0)    # param 5 ~ 7 not used
 		# send command to vehicle
 		self.vehicle.send_mavlink(msg)
+
 		while True:
-			print("Current heading: %s" % self.vehicle.heading)
+			print("Current heading: %s" % self.vehicle.attitude)
 			if direction == 1 and self.vehicle.heading>=newHeading:
 				print("New heading reached")
 				break
