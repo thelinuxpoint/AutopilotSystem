@@ -127,16 +127,26 @@ class Vehicle(object):
 			time.sleep(1)
 		print(" OK")
 		print("APS|> \x1b[32mTAKING OFF\x1b[0m!")
-		self.vehicle.simple_takeoff(altitude)  # Take off to target altitude
-
+		self.vehicle.simple_takeoff(self.vehicle.location.global_relative_frame.alt+altitude)  # Take off to target altitude
+		print("Target alt ",self.vehicle.location.global_relative_frame.alt+altitude)
 		#---------------------- CHECK ALTITUDE --------------------
-		# while True:
-		# 	print("APS|> Altitude: ", self.vehicle.location.global_relative_frame.alt)
-		# 	self.turn(180,True,"CW")
-		# 	# Break and return from function just below target altitude.
-		# 	if self.vehicle.location.global_relative_frame.alt >= altitude * 0.95:
-		# 		print("Reached target altitude")
-		# 		break
+		while True:
+			print("APS|> Altitude: ", self.vehicle.location.global_relative_frame.alt)
+			# self.turn(180,True,"CW")
+			# Break and return from function just below target altitude.
+			if self.vehicle.location.global_relative_frame.alt >= altitude * 0.95:
+				print("Reached target altitude")
+				break
+			time.sleep(1)
+		self.turn(90,True,"CW")
+
+	def get_gps(self):
+		# while not self.vehicle.is_armable:
+		# 	print(" Waiting for vehicle to initialise...")
+		# 	time.sleep(1)
+
+		print(self.vehicle.location.global_relative_frame.lat, end=" ",flush=True)
+		print(self.vehicle.location.global_relative_frame.lon, end="\n",flush=True)
 
 	def turn(self,heading, relative, direction):
 
